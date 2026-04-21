@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up - Arcade Bar</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="header">
+      <a class="logo" href="index.html">Arcade Bar</a>
+
+      <nav aria-label="Main navigation">
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="play.html">Play</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+      <a class="login-btn" href="login.html">Login</a>
+    </header>
+
+    <main id="main-content">
+      <section class="section-hero signup-hero">
+        <div class="hero-content">
+          <p class="hero-tag">Join the arcade crew.</p>
+          <h1>Sign Up</h1>
+          <p class="hero-text">Create an account for updates, specials, and events.</p>
+        </div>
+      </section>
+
+      <section class="container page-section">
+        <div class="signup-card">
+          <h2>Create Account</h2>
+
+          <form class="signup-form" action="#" method="post">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" placeholder="Enter your name" autocomplete="name" required />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" placeholder="Create a password" autocomplete="new-password" required />
+            </div>
+
+            <div class="form-group">
+              <label for="confirm-password">Confirm Password</label>
+              <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" autocomplete="new-password" required />
+            </div>
+
+            <button type="submit" class="signup-submit">Sign Up</button>
+          </form>
+
+          <p class="signup-text">Already have an account? <a href="login.html">Login here</a></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© 2026, The Arcade Bar</p>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>

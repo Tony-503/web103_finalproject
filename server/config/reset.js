@@ -1,4 +1,4 @@
-import '../config/dotenv.js'
+import './dotenv.js'
 import { pool } from '../config/database.js'
 
 
@@ -21,6 +21,7 @@ async function createArcadeGamesTable() {
       genre       VARCHAR(50),
       players     INT DEFAULT 1,
       description TEXT,
+      rating      NUMERIC(2,1) CHECK (rating >= 0 AND rating <= 10),
       image_url   TEXT
     );
   `)
@@ -81,7 +82,7 @@ async function createEventGamesTable() {
 
 async function seedArcadeGames() {
   await pool.query(`
-    INSERT INTO arcade_games (name, genre, players, description, image_url) VALUES
+    INSERT INTO arcade_games (name, genre, players, description, image_url, rating) VALUES
       ('Pac-Man',              'Classic', 1, 'Navigate mazes and eat pellets while avoiding ghosts.',       'https://upload.wikimedia.org/wikipedia/commons/0/0b/Pac-Man_GIF_recreation.gif'),
       ('Street Fighter II',    'Fighting',2, 'Head-to-head fighting game with iconic characters.',          'https://upload.wikimedia.org/wikipedia/en/4/4e/Street_Fighter_II_SNES.jpg'),
       ('Galaga',               'Shooter', 1, 'Classic fixed shooter — defend against waves of insects.',   'https://upload.wikimedia.org/wikipedia/en/4/49/Galaga.png'),
@@ -109,7 +110,7 @@ async function seedEvents() {
 async function seedFood() {
   await pool.query(`
     INSERT INTO food (name, description, price, category) VALUES
-      ('Arcade Nachos',      'Tortilla chips loaded with cheese, jalapeños, and salsa.',      11.99, 'Snacks'),
+      ('1Arcade Nachos',      'Tortilla chips loaded with cheese, jalapeños, and salsa.',      11.99, 'Snacks'),
       ('Classic Burger',     'Beef patty with lettuce, tomato, and our house sauce.',         13.99, 'Mains'),
       ('Buffalo Wings',      'Crispy wings tossed in buffalo sauce, served with ranch.',      12.99, 'Snacks'),
       ('Loaded Fries',       'Golden fries topped with cheese, bacon, and green onions.',      9.99, 'Snacks'),
@@ -149,3 +150,31 @@ async function seedEventGames() {
   `)
   console.log('event_games seeded.')
 }
+
+
+
+
+const runReset = async () => {
+    try {
+        await dropTables()
+        await createArcadeGamesTable()
+        await createEventsTable()
+        await createFoodTable()
+        await createDrinksTable()
+        await createEventGamesTable()
+        await seedArcadeGames()
+        await seedEvents()
+        await seedFood()
+        await seedDrinks()
+        await seedEventGames()
+        console.log('✅ Database reset and seeded successfully!')
+    } catch (err) {
+        console.error('❌ Error resetting database:', err)
+    } finally {
+        pool.end() // Close the connection
+    }
+}
+
+runReset()
+
+

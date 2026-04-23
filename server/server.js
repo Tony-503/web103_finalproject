@@ -3,7 +3,7 @@ import cors from 'cors'
 
 const app = express()
 
-app.use(json())
+app.use(express.json())
 app.use(cors())
 
 app.get('/', (req, res) => {
@@ -13,5 +13,5 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost${PORT}`)
+    console.log(`🚀 Server running on http://localhost:${PORT}`)
 })

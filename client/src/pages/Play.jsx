@@ -1,23 +1,30 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const ALL_GAMES = [
-  { name: "Pac-Man", category: "classic", rating: 5 },
-  { name: "Street Fighter", category: "fighting", rating: 4 },
-  { name: "Pinball", category: "classic", rating: 5 },
-  { name: "Mortal Kombat", category: "fighting", rating: 5 },
-  { name: "Galaga", category: "classic", rating: 4 },
-  { name: "Air Hockey", category: "sports", rating: 4 },
-];
-
 function Play() {
+  const [games, setGames] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [filter, setFilter] = useState("all");
   const [sort, setSort] = useState("default");
 
+  useEffect(() => {
+    fetch("/api/games")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load games");
+        return res.json();
+      })
+      .then((data) => setGames(data))
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const genres = useMemo(() => [...new Set(games.map((g) => g.genre?.toLowerCase()).filter(Boolean))], [games]);
+
   const visibleGames = useMemo(() => {
     const filtered =
-      filter === "all" ? ALL_GAMES : ALL_GAMES.filter((g) => g.category === filter);
+      filter === "all" ? games : games.filter((g) => g.genre?.toLowerCase() === filter);
 
     return [...filtered].sort((a, b) => {
       if (sort === "name-asc") return a.name.localeCompare(b.name);
@@ -26,7 +33,7 @@ function Play() {
       if (sort === "rating-asc") return a.rating - b.rating;
       return 0;
     });
-  }, [filter, sort]);
+  }, [games, filter, sort]);
 
   const handleReset = () => {
     setFilter("all");
@@ -54,16 +61,18 @@ function Play() {
 
             <div className="games-filter-form">
               <div className="filter-group">
-                <label htmlFor="game-filter">Filter by category</label>
+                <label htmlFor="game-filter">Filter by genre</label>
                 <select
                   id="game-filter"
                   value={filter}
                   onChange={(e) => setFilter(e.target.value)}
                 >
                   <option value="all">All Games</option>
-                  <option value="classic">Classic</option>
-                  <option value="fighting">Fighting</option>
-                  <option value="sports">Sports</option>
+                  {genres.map((g) => (
+                    <option key={g} value={g}>
+                      {g.charAt(0).toUpperCase() + g.slice(1)}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -87,27 +96,49 @@ function Play() {
               </button>
             </div>
 
-            <p className="filter-results" aria-live="polite">
-              {visibleGames.length} game{visibleGames.length === 1 ? "" : "s"} found
-            </p>
+            {!loading && !error && (
+              <p className="filter-results" aria-live="polite">
+                {visibleGames.length} game{visibleGames.length === 1 ? "" : "s"} found
+              </p>
+            )}
           </div>
         </section>
 
         <section className="container page-section games-section">
           <h2 className="section-title">Game Lineup</h2>
-          <div className="games-grid">
-            {visibleGames.map((game) => (
-              <div
-                className="game-card"
-                key={game.name}
-                data-category={game.category}
-                data-name={game.name}
-                data-rating={game.rating}
-              >
-                {game.name}
-              </div>
-            ))}
-          </div>
+
+          {loading && <p className="fetch-status">Loading games...</p>}
+          {error && <p className="fetch-error">{error}</p>}
+
+          {!loading && !error && (
+            <div className="games-grid">
+              {visibleGames.map((game) => (
+                <div
+                  className="game-card"
+                  key={game.id}
+                  data-category={game.genre?.toLowerCase()}
+                  data-rating={game.rating}
+                >
+                  {game.image_url && (
+                    <img src={game.image_url} alt={game.name} className="game-card-img" />
+                  )}
+                  <div className="game-card-body">
+                    <h3 className="game-card-name">{game.name}</h3>
+                    <span className="game-card-genre">{game.genre}</span>
+                    {game.description && (
+                      <p className="game-card-desc">{game.description}</p>
+                    )}
+                    <div className="game-card-meta">
+                      <span className="game-card-players">
+                        {game.players === 1 ? "1 Player" : `${game.players} Players`}
+                      </span>
+                      <span className="game-card-rating">⭐ {game.rating}/10</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       </main>
 

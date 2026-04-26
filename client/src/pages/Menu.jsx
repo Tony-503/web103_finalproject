@@ -1,46 +1,65 @@
+import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const menuSections = [
-  {
-    title: "Food",
-    image: "/img/burger.jpg",
-    alt: "Burger with fries",
-    items: [
-      { name: "Loaded Fries", price: "$8" },
-      { name: "Cheeseburger", price: "$12" },
-      { name: "Chicken Wings", price: "$14" },
-      { name: "Nachos", price: "$10" },
-      { name: "Mozzarella Sticks", price: "$9" },
-    ],
-  },
-  {
-    title: "Drinks",
-    image: "/img/drinks.jpg",
-    alt: "Cold drinks in cans",
-    items: [
-      { name: "House Beer", price: "$6" },
-      { name: "Craft Beer", price: "$7" },
-      { name: "Classic Margarita", price: "$11" },
-      { name: "Arcade Punch", price: "$10" },
-      { name: "Soda", price: "$3" },
-    ],
-  },
-  {
-    title: "Specials",
-    image: "/img/pizza.jpg",
-    alt: "Pizza",
-    items: [
-      { name: "Tuesday Burger Deal", price: "$9" },
-      { name: "Wednesday Wing Night", price: "$12" },
-      { name: "Friday Happy Hour", price: "2 for 1" },
-      { name: "Saturday Game Night Combo", price: "$18" },
-      { name: "Sunday Family Bundle", price: "$24" },
-    ],
-  },
+const SPECIALS = [
+  { name: "Tuesday Burger Deal", price: "$9" },
+  { name: "Wednesday Wing Night", price: "$12" },
+  { name: "Friday Happy Hour", price: "2 for 1" },
+  { name: "Saturday Game Night Combo", price: "$18" },
+  { name: "Sunday Family Bundle", price: "$24" },
 ];
 
 function Menu() {
+  const [food, setFood] = useState([]);
+  const [drinks, setDrinks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch("/api/menu")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load menu");
+        return res.json();
+      })
+      .then((data) => {
+        setFood(data.food);
+        setDrinks(data.drinks);
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const menuSections = [
+    {
+      title: "Food",
+      image: "/img/burger.jpg",
+      alt: "Burger with fries",
+      items: food.map((item) => ({
+        name: item.name,
+        price: `$${parseFloat(item.price).toFixed(2)}`,
+        description: item.description,
+      })),
+    },
+    {
+      title: "Drinks",
+      image: "/img/drinks.jpg",
+      alt: "Cold drinks in cans",
+      items: drinks.map((item) => ({
+        name: item.name,
+        price: `$${parseFloat(item.price).toFixed(2)}`,
+        description: item.description,
+        badge: item.is_alcoholic ? "21+" : null,
+      })),
+    },
+    {
+      title: "Specials",
+      image: "/img/pizza.jpg",
+      alt: "Pizza",
+      items: SPECIALS,
+    },
+  ];
+
   return (
     <>
       <Header />
@@ -57,24 +76,39 @@ function Menu() {
         </section>
 
         <section className="container page-section">
-          <div className="menu-grid">
-            {menuSections.map((section) => (
-              <div className="menu-card" key={section.title}>
-                <img
-                  src={section.image}
-                  alt={section.alt}
-                  className="menu-image"
-                />
-                <h2>{section.title}</h2>
-                {section.items.map((item) => (
-                  <div className="menu-item" key={item.name}>
-                    <p>{item.name}</p>
-                    <span>{item.price}</span>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
+          {loading && <p className="fetch-status">Loading menu...</p>}
+          {error && <p className="fetch-error">{error}</p>}
+
+          {!loading && !error && (
+            <div className="menu-grid">
+              {menuSections.map((section) => (
+                <div className="menu-card" key={section.title}>
+                  <img
+                    src={section.image}
+                    alt={section.alt}
+                    className="menu-image"
+                  />
+                  <h2>{section.title}</h2>
+                  {section.items.map((item) => (
+                    <div className="menu-item" key={item.name}>
+                      <div>
+                        <p>{item.name}</p>
+                        {item.description && (
+                          <p className="menu-item-desc">{item.description}</p>
+                        )}
+                      </div>
+                      <div className="menu-item-right">
+                        {item.badge && (
+                          <span className="menu-badge">{item.badge}</span>
+                        )}
+                        <span>{item.price}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       </main>
 

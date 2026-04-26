@@ -2,6 +2,7 @@ import { useRoutes } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import Play from "./pages/Play";
+import GameDetail from "./pages/GameDetail";
 import Menu from "./pages/Menu";
 import Events from "./pages/Events";
 import Gallery from "./pages/Gallery";
@@ -13,6 +14,7 @@ function App() {
   const routes = useRoutes([
     { path: "/", element: <Home /> },
     { path: "/play", element: <Play /> },
+    { path: "/games/:id", element: <GameDetail /> },
     { path: "/menu", element: <Menu /> },
     { path: "/events", element: <Events /> },
     { path: "/gallery", element: <Gallery /> },

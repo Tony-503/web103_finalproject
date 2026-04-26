@@ -867,6 +867,69 @@ select:focus-visible {
   margin-bottom: 2rem;
 }
 
+/* Back link */
+
+.back-link {
+  display: inline-block;
+  font-size: 1.6rem;
+  color: var(--cyan);
+  text-decoration: none;
+  margin-bottom: 3rem;
+}
+
+.back-link:hover {
+  color: var(--pink);
+}
+
+/* Game detail page */
+
+.game-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.game-detail-img {
+  width: 100%;
+  border-radius: 1.2rem;
+  border: 2px solid var(--cyan);
+  object-fit: cover;
+  max-height: 42rem;
+}
+
+.game-detail-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.game-detail-name {
+  font-size: 4rem;
+  color: var(--cyan);
+  text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+}
+
+.game-detail-desc {
+  font-size: 1.8rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.game-detail-meta {
+  display: flex;
+  gap: 2rem;
+  font-size: 1.6rem;
+  color: var(--muted);
+  margin-top: 0.8rem;
+}
+
+@media (max-width: 900px) {
+  .game-detail {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Footer */
 
 .footer {

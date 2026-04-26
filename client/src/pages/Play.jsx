@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -113,11 +114,13 @@ function Play() {
           {!loading && !error && (
             <div className="games-grid">
               {visibleGames.map((game) => (
-                <div
+                <Link
+                  to={`/games/${game.id}`}
                   className="game-card"
                   key={game.id}
                   data-category={game.genre?.toLowerCase()}
                   data-rating={game.rating}
+                  style={{ textDecoration: "none" }}
                 >
                   {game.image_url && (
                     <img src={game.image_url} alt={game.name} className="game-card-img" />
@@ -135,7 +138,7 @@ function Play() {
                       <span className="game-card-rating">⭐ {game.rating}/10</span>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}

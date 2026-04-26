@@ -1,3 +1,6 @@
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
 const eventsData = [
   {
     title: "Trivia Night",
@@ -25,31 +28,7 @@ const eventsData = [
 function Events() {
   return (
     <>
-      <a className="skip-link" href="#main-content">
-        Skip to main content
-      </a>
-
-      <header className="header">
-        <a className="logo" href="/">
-          Arcade Bar
-        </a>
-
-        <nav aria-label="Main navigation">
-          <ul className="nav">
-            <li><a href="/">Home</a></li>
-            <li><a href="/play">Play</a></li>
-            <li><a href="/menu">Menu</a></li>
-            <li><a href="/events" className="active">Events</a></li>
-            <li><a href="/gallery">Gallery</a></li>
-            <li><a href="/contact">Contact</a></li>
-          </ul>
-        </nav>
-
-        <div className="auth-buttons">
-          <a className="login-btn" href="/login">Login</a>
-          <a className="login-btn" href="/signup">Sign Up</a>
-        </div>
-      </header>
+      <Header />
 
       <main id="main-content">
         <section className="section-hero events-hero">
@@ -88,9 +67,7 @@ function Events() {
         </section>
       </main>
 
-      <footer className="footer">
-        <p>© 2026, The Arcade Bar</p>
-      </footer>
+      <Footer />
     </>
   );
 }

@@ -5,6 +5,7 @@ CodePath WEB103 Final Project
 Designed and developed by: [Moeez Ahmad, Tony Hernandez, Rodrigo Mendoza, Robert Berryman II]
 
 🔗 Link to deployed app:
+[Live Project](https://client-puwg.onrender.com/)
 
 ## About
 
@@ -29,31 +30,31 @@ Database: PostgreSQL
 
 ### Filter and Sort Games
 
-Users can filter or sort arcade games based on categories or other criteria to make it easier to find games they want to play.
+✅Users can filter or sort arcade games based on categories or other criteria to make it easier to find games they want to play.
 
 [gif goes here]
 
 ### Error Handling
 
-The web app gracefully handles errors so users get feedback when something goes wrong.
+✅The web app gracefully handles errors so users get feedback when something goes wrong.
 
 [gif goes here]
 
 ### Photo Gallery
 
-Users can view pictures of the bar, events, and high scorers to get a better idea of the atmosphere.
+✅Users can view pictures of the bar, events, and high scorers to get a better idea of the atmosphere.
 
 [gif goes here]
 
 ### Happy Hour Specials
 
-Users can see food and arcade game deals during happy hour.
+✅Users can see food and arcade game deals during happy hour.
 
 [gif goes here]
 
 ### Tournament Registration
 
-Users can sign up for weekly or monthly competitions and events.
+✅Users can sign up for weekly or monthly competitions and events.
 
 [gif goes here]
 

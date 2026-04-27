@@ -10,15 +10,14 @@ const SPECIALS = [
   { name: "Sunday Family Bundle", price: "$24" },
 ];
 
-function Menu({ api_url }) {
+function Menu() {
   const [food, setFood] = useState([]);
   const [drinks, setDrinks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const apiBase = api_url || "";
 
   useEffect(() => {
-    fetch(`${apiBase}/api/menu`)
+    fetch("/api/menu")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load menu");
         return res.json();
